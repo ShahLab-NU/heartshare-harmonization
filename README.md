@@ -1,62 +1,86 @@
 # HeartShare Harmonization
 
-Notebooks and instructions for running HeartShare data harmonization on
-[BioData Catalyst powered by Seven Bridges](https://platform.sb.biodatacatalyst.nhlbi.nih.gov/)
-(BDC).
+Personal runner notebooks for HeartShare harmonization on BioData Catalyst
+(BDC), powered by Seven Bridges. Each user runs their own notebook copies in
+their own Data Studio analysis workspace. Shared Project Files hold the release
+and study data; do not edit or run the shared archived notebook copies there.
 
-This repository contains only the runner notebooks and these instructions.
-The harmonization release itself — mapping files, standards library, catalog,
-and runtime — lives in your BDC project's **Project Files** under
-`x01_harmonization/`, alongside the study data. Nothing in this repository
-contains study data.
+> **Status: evaluation.** Harmonized outputs remain candidate data for testing
+> and feedback. Please do not publish results derived from these outputs.
 
-> **Status:** evaluation. Harmonized outputs are candidate data for testing
-> and feedback; verification of the release is ongoing. Please do not
-> publish results derived from these outputs.
+## Get your own notebooks
 
-## Prerequisites
+Start your own BDC Data Studio analysis and open a JupyterLab terminal:
 
-- Membership in the HeartShare X01 harmonization BDC project (the notebooks
-  read the release and study files from that project's Project Files).
-- A BDC Data Studio instance (Jupyter, any standard Python image).
+```bash
+cd /sbgenomics/workspace
+git clone https://github.com/ShahLab-NU/heartshare-harmonization.git
+mkdir -p heartshare-analysis-v0.2.0-schema12-r3
+cp heartshare-harmonization/notebooks/*.ipynb heartshare-analysis-v0.2.0-schema12-r3/
+git -C heartshare-harmonization rev-parse HEAD > heartshare-analysis-v0.2.0-schema12-r3/notebook_commit.txt
+cp heartshare-harmonization/notebook_compatibility.json heartshare-analysis-v0.2.0-schema12-r3/
+```
 
-## Getting the notebooks into Data Studio
+Open the notebooks in `heartshare-analysis-v0.2.0-schema12-r3/` and edit those
+copies. Keep the repository checkout clean so updates do not conflict with your
+settings or saved notebook outputs. Save your working notebooks and provenance
+with your results before ending the Data Studio analysis.
 
-1. Open your BDC project and start (or open) a **Data Studio** analysis.
-2. In the JupyterLab launcher, open a **Terminal**.
-3. Clone this repository:
+## Select the matching release
 
-   ```bash
-   git clone https://github.com/ShahLab-NU/heartshare-harmonization.git
-   ```
+This notebook set was tested with the **v0.2.0 schema12_r3 candidate**. Its
+runtime SHA-256 is recorded in [notebook_compatibility.json](notebook_compatibility.json).
+The matching release must be uploaded under:
 
-4. The notebooks appear in the file browser under
-   `heartshare-harmonization/notebooks/`. Open them from there.
+```text
+/sbgenomics/project-files/x01_harmonization/v0.2.0/
+```
 
-To update to the latest version later, run `git pull` from the
-`heartshare-harmonization` directory in the same terminal.
+In the harmonization notebook's first configuration cell, set:
 
-## Running
+```python
+RELEASE_ROOT = "/sbgenomics/project-files/x01_harmonization"
+RELEASE_VERSION = "v0.2.0"
+```
 
-### 1. Harmonize — `notebooks/heartshare_harmonize_bdc.ipynb`
+Select the release explicitly instead of leaving the notebook default at
+`"latest"`. Both notebooks accept runtime output schemas 1.1 and 1.2, but the
+updated Table One additionally requires the `table_one/analysis/1` capability.
+The earlier schema12_r2 runtime does not provide it. Keep the checksum checks
+intact; install the matching release rather than bypassing a compatibility error.
 
-Open the notebook and run it top to bottom. The configuration cell at the
-top points at the release root (`/sbgenomics/project-files/x01_harmonization`)
-and defaults to the latest release version found there; you can select
-studies, variables, and timepoints in the same cell. Outputs (CSV + Parquet,
-with a manifest, data dictionary, and lineage) are written under
-`/sbgenomics/workspace/output-files/` — use "Save to Project Files" in Data
-Studio if you want to keep them.
+## Run
 
-### 2. Table One — `notebooks/heartshare_table_one_bdc.ipynb`
+1. Open `heartshare_harmonize_bdc.ipynb`, select studies and variables, and run
+   the dry run first. Resolve any reported missing files before setting
+   `DRY_RUN = False`. Record the printed output folder.
+2. Open `heartshare_table_one_bdc.ipynb`, set `RUN_DIR` to that output folder,
+   and run its cells. It supports baseline summaries, cohort filters, subgroup
+   comparisons, per-study longitudinal summaries, and configurable continuous
+   summaries. It exports tables and figures plus analysis settings and
+   participant selection counts.
 
-Run after a harmonization run; point its configuration cell at the
-harmonized output directory. It produces a baseline characteristics table
-(median [IQR], n (%)) with CSV/Excel/Word/HTML exports.
+Table One normally uses the exact runtime recorded by the harmonization run.
+Use a fresh kernel when changing releases or runtimes. Results are written under
+`/sbgenomics/workspace/output-files/`; use Data Studio's Save to Project Files
+workflow to preserve the results and working notebook copies.
+
+## Updates and historical reruns
+
+Update the clean repository checkout with:
+
+```bash
+git -C /sbgenomics/workspace/heartshare-harmonization pull --ff-only
+```
+
+Copy the updated notebooks into a **new analysis folder**. Leave previous
+working notebooks and results intact. For a historical run, retrieve the exact
+recorded commit or release tag rather than pulling the latest scripts. See
+[RERUNS.md](RERUNS.md) for the complete procedure.
 
 ## Questions and problems
 
-Contact Ryan Sisk (r-sisk@northwestern.edu) or open an issue on this
-repository. When reporting a problem, please include the release version the
-notebook printed, the study/variable involved, and the notebook cell output
-(with any participant-level values removed).
+Contact Ryan Sisk (r-sisk@northwestern.edu) or open an issue here. Include the
+notebook commit, release/runtime version, study and variable, and relevant error
+output, with participant-level values removed. This repository contains no
+study data, mappings, standards library, or runtime archives.

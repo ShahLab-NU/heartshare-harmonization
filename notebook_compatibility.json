@@ -1,0 +1,32 @@
+{
+  "candidate_revision": "v0.2.0-schema12-r3",
+  "release_version": "v0.2.0",
+  "runtime_bundle": {
+    "path": "runtime/heartshare_bdc_runtime_v0.2.0-schema12-r3.zip",
+    "sha256": "80cfe0c25ba00d82c0ab41caf9f9fb57bc0466676e158c5eccfb05cc374929a0",
+    "runtime_version": "v0.2.0-schema12-r3",
+    "output_schema_version": "1.2"
+  },
+  "base_runtime_sha256": "51f29cfa0076cac9907dcd5f8bd47efb0c114d50fd1625f50a195f8394f5355f",
+  "supported_output_schemas": [
+    "1.1",
+    "1.2"
+  ],
+  "table_one_required_runtime_features": [
+    "table_one/analysis/1"
+  ],
+  "notebooks": {
+    "heartshare_harmonize_bdc.ipynb": {
+      "sha256": "c51ec033bcbdc03c2d853e94dc18e5b9e45bb33eff14ea21691436684e6524f3"
+    },
+    "heartshare_table_one_bdc.ipynb": {
+      "sha256": "d1a9f387cef93769d47f5dde38990c182fea31562dd1860523b888829d1bb0a9"
+    }
+  },
+  "notebook_repository": "https://github.com/ShahLab-NU/heartshare-harmonization",
+  "proposed_notebook_tag": "candidate/v0.2.0-schema12-r3",
+  "publication_status": "Validated locally; see repository tags and pull requests for publication status.",
+  "source_git_sha": "eeebd4de180a8c025396667f041e71bd06e757c1",
+  "source_git_clean": false,
+  "updated_table_one_sha256": "d4f15e4154d68723ad366ed13a7d04e996950af8e2e88d8f49d64dc671f35095"
+}
