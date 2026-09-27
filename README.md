@@ -15,13 +15,13 @@ Start your own BDC Data Studio analysis and open a JupyterLab terminal:
 ```bash
 cd /sbgenomics/workspace
 git clone https://github.com/ShahLab-NU/heartshare-harmonization.git
-mkdir -p heartshare-analysis-v0.2.0-schema12-r3
-cp heartshare-harmonization/notebooks/*.ipynb heartshare-analysis-v0.2.0-schema12-r3/
-git -C heartshare-harmonization rev-parse HEAD > heartshare-analysis-v0.2.0-schema12-r3/notebook_commit.txt
-cp heartshare-harmonization/notebook_compatibility.json heartshare-analysis-v0.2.0-schema12-r3/
+mkdir -p heartshare-analysis-v0.2.0-schema12-r3-selection-2
+cp heartshare-harmonization/notebooks/*.ipynb heartshare-analysis-v0.2.0-schema12-r3-selection-2/
+git -C heartshare-harmonization rev-parse HEAD > heartshare-analysis-v0.2.0-schema12-r3-selection-2/notebook_commit.txt
+cp heartshare-harmonization/notebook_compatibility.json heartshare-analysis-v0.2.0-schema12-r3-selection-2/
 ```
 
-Open the notebooks in `heartshare-analysis-v0.2.0-schema12-r3/` and edit those
+Open the notebooks in `heartshare-analysis-v0.2.0-schema12-r3-selection-2/` and edit those
 copies. Keep the repository checkout clean so updates do not conflict with your
 settings or saved notebook outputs. Save your working notebooks and provenance
 with your results before ending the Data Studio analysis.
@@ -48,6 +48,31 @@ Select the release explicitly instead of leaving the notebook default at
 updated Table One additionally requires the `table_one/analysis/1` capability.
 The earlier schema12_r2 runtime does not provide it. Keep the checksum checks
 intact; install the matching release rather than bypassing a compatibility error.
+
+## Choose domains and individual variables
+
+Step 4 combines both lists, without duplicates. For example:
+
+```python
+DOMAINS = ["demographics"]
+VARIABLES = ["height", "weight", "bmi"]
+```
+
+This selects every demographic variable (including age and sex), plus height,
+weight, and BMI. The notebook prints the combined selection before running.
+Leave both lists empty to select all mapped variables. Domain names are the
+category headings printed by Step 2; variable names must match that inventory.
+Earlier notebooks ignored DOMAINS whenever VARIABLES was nonempty.
+
+Include height and weight when requesting BMI with the r3 runtime: its
+cross-file calculation currently loses dependency-only values otherwise. The
+new default example includes both components. This is a selection workaround,
+not a change to the runtime uploaded to BDC.
+
+Turning off BASELINE_ONLY includes baseline and follow-up visits. It does not
+exclude baseline sex values; HFN-NEAT's sex mapping is baseline-only and is not
+repeated at each follow-up visit. If sex is missing from the entire output,
+check the manifest's selected_variables, variable_coverage, and dataset reports.
 
 ## Run
 

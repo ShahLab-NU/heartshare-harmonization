@@ -17,16 +17,18 @@
   ],
   "notebooks": {
     "heartshare_harmonize_bdc.ipynb": {
-      "sha256": "c51ec033bcbdc03c2d853e94dc18e5b9e45bb33eff14ea21691436684e6524f3"
+      "sha256": "2458996db7fc014a0e0729cec50ae026be4d78f4a2957847849902deb4df05eb"
     },
     "heartshare_table_one_bdc.ipynb": {
       "sha256": "d1a9f387cef93769d47f5dde38990c182fea31562dd1860523b888829d1bb0a9"
     }
   },
   "notebook_repository": "https://github.com/ShahLab-NU/heartshare-harmonization",
-  "proposed_notebook_tag": "candidate/v0.2.0-schema12-r3",
+  "proposed_notebook_tag": "candidate/v0.2.0-schema12-r3-selection-2",
   "publication_status": "Validated locally; see repository tags and pull requests for publication status.",
   "source_git_sha": "eeebd4de180a8c025396667f041e71bd06e757c1",
   "source_git_clean": false,
-  "updated_table_one_sha256": "d4f15e4154d68723ad366ed13a7d04e996950af8e2e88d8f49d64dc671f35095"
+  "updated_table_one_sha256": "d4f15e4154d68723ad366ed13a7d04e996950af8e2e88d8f49d64dc671f35095",
+  "notebook_revision": "schema12-r3-selection-2",
+  "previous_notebook_tag": "candidate/v0.2.0-schema12-r3"
 }
