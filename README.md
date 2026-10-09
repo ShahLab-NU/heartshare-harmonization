@@ -15,37 +15,37 @@ Start your own BDC Data Studio analysis and open a JupyterLab terminal:
 ```bash
 cd /sbgenomics/workspace
 git clone https://github.com/ShahLab-NU/heartshare-harmonization.git
-mkdir -p heartshare-analysis-v0.2.0-schema12-r3-selection-2
-cp heartshare-harmonization/notebooks/*.ipynb heartshare-analysis-v0.2.0-schema12-r3-selection-2/
-git -C heartshare-harmonization rev-parse HEAD > heartshare-analysis-v0.2.0-schema12-r3-selection-2/notebook_commit.txt
-cp heartshare-harmonization/notebook_compatibility.json heartshare-analysis-v0.2.0-schema12-r3-selection-2/
+mkdir -p heartshare-analysis-v0.1.3-runtime-r4-coverage-1
+cp heartshare-harmonization/notebooks/*.ipynb heartshare-analysis-v0.1.3-runtime-r4-coverage-1/
+git -C heartshare-harmonization rev-parse HEAD > heartshare-analysis-v0.1.3-runtime-r4-coverage-1/notebook_commit.txt
+cp heartshare-harmonization/notebook_compatibility.json heartshare-analysis-v0.1.3-runtime-r4-coverage-1/
 ```
 
-Open the notebooks in `heartshare-analysis-v0.2.0-schema12-r3-selection-2/` and edit those
+Open the notebooks in `heartshare-analysis-v0.1.3-runtime-r4-coverage-1/` and edit those
 copies. Keep the repository checkout clean so updates do not conflict with your
 settings or saved notebook outputs. Save your working notebooks and provenance
 with your results before ending the Data Studio analysis.
 
 ## Select the matching release
 
-This notebook set was tested with the **v0.2.0 schema12_r3 candidate**. Its
+This notebook set was tested with the **v0.1.3 runtime_r4 bundle**. Its
 runtime SHA-256 is recorded in [notebook_compatibility.json](notebook_compatibility.json).
 The matching release must be uploaded under:
 
 ```text
-/sbgenomics/project-files/x01_harmonization/v0.2.0/
+/sbgenomics/project-files/x01_harmonization/v0.1.3/
 ```
 
 In the harmonization notebook's first configuration cell, set:
 
 ```python
 RELEASE_ROOT = "/sbgenomics/project-files/x01_harmonization"
-RELEASE_VERSION = "v0.2.0"
+RELEASE_VERSION = "v0.1.3"
 ```
 
-Select the release explicitly instead of leaving the notebook default at
-`"latest"`. Both notebooks accept runtime output schemas 1.1 and 1.2, but the
-updated Table One additionally requires the `table_one/analysis/1` capability.
+The harmonization notebook defaults to `"v0.1.3"`. Keep that explicit version
+for this bundle; changing it selects a different release. Both notebooks accept
+runtime output schemas 1.1 and 1.2, but Table One additionally requires the `table_one/analysis/1` capability.
 The earlier schema12_r2 runtime does not provide it. Keep the checksum checks
 intact; install the matching release rather than bypassing a compatibility error.
 
@@ -64,15 +64,26 @@ Leave both lists empty to select all mapped variables. Domain names are the
 category headings printed by Step 2; variable names must match that inventory.
 Earlier notebooks ignored DOMAINS whenever VARIABLES was nonempty.
 
-Include height and weight when requesting BMI with the r3 runtime: its
-cross-file calculation currently loses dependency-only values otherwise. The
-new default example includes both components. This is a selection workaround,
-not a change to the runtime uploaded to BDC.
+The default example includes height and weight alongside BMI so you can inspect
+the component measurements with the calculated result.
 
 Turning off BASELINE_ONLY includes baseline and follow-up visits. It does not
 exclude baseline sex values; HFN-NEAT's sex mapping is baseline-only and is not
 repeated at each follow-up visit. If sex is missing from the entire output,
 check the manifest's selected_variables, variable_coverage, and dataset reports.
+
+## Check dry-run coverage
+
+Step 6 shows a variable/timepoint-by-study matrix and a gap-only summary with
+which studies are affected and why. Missing source or mapping files show
+**NOT READY**. When files exist but individual requested variables lack mappings,
+the notebook shows **READY TO RUN, WITH VARIABLE COVERAGE GAPS**.
+
+`mapping_missing` means no selected mapping exists; it does not establish that
+the study never collected the data. `planned` confirms a mapping, with source
+columns and usable values checked during the real run. Combinations without a
+coverage record are labeled **Not assessed at this timepoint**. The complete
+record is also saved in `variable_coverage.csv` and `variable_coverage.json`.
 
 ## Run
 
