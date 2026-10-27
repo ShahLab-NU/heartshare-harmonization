@@ -22,9 +22,10 @@ The archived pre-update public revision is
 `763e45cc3ef4d0404aca12c7562acbd52ec30ae0` (schema 1.1 notebooks). This is not
 proof that every older analysis used that commit; prefer its saved provenance.
 
-New BDC release archives also contain notebook snapshots as a recovery option.
-Copy them into your personal Data Studio workspace before editing or running.
-The public notebook repository is the normal distribution channel; shared
+Some BDC release archives also contain notebook snapshots as a recovery option;
+the v0.1.4 archive does not. Copy any snapshot into your personal Data Studio
+workspace before editing or running. The public notebook repository is the
+normal distribution channel; shared
 Project Files are not a shared editable notebook workspace.
 
 For exact historical Table One results, use the matching historical notebook
@@ -40,5 +41,4 @@ checksum and keep its outputs separate.
 - Keep notebook/runtime compatibility metadata and archived notebook copies.
 - Test both notebooks against the packaged runtime, including exports and
   feature incompatibility failures, before publishing.
-- Require a new release version when changing an already-used release. The
-  current v0.2.0 candidate can be finalized as r3 because no saved runs used it.
+- Require a new release version when changing an already-used release.

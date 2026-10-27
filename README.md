@@ -15,39 +15,56 @@ Start your own BDC Data Studio analysis and open a JupyterLab terminal:
 ```bash
 cd /sbgenomics/workspace
 git clone https://github.com/ShahLab-NU/heartshare-harmonization.git
-mkdir -p heartshare-analysis-v0.1.3-runtime-r4-coverage-1
-cp heartshare-harmonization/notebooks/*.ipynb heartshare-analysis-v0.1.3-runtime-r4-coverage-1/
-git -C heartshare-harmonization rev-parse HEAD > heartshare-analysis-v0.1.3-runtime-r4-coverage-1/notebook_commit.txt
-cp heartshare-harmonization/notebook_compatibility.json heartshare-analysis-v0.1.3-runtime-r4-coverage-1/
+mkdir -p heartshare-analysis-v0.1.4-runtime-r2-1
+cp heartshare-harmonization/notebooks/*.ipynb heartshare-analysis-v0.1.4-runtime-r2-1/
+git -C heartshare-harmonization rev-parse HEAD > heartshare-analysis-v0.1.4-runtime-r2-1/notebook_commit.txt
+cp heartshare-harmonization/notebook_compatibility.json heartshare-analysis-v0.1.4-runtime-r2-1/
 ```
 
-Open the notebooks in `heartshare-analysis-v0.1.3-runtime-r4-coverage-1/` and edit those
+Open the notebooks in `heartshare-analysis-v0.1.4-runtime-r2-1/` and edit those
 copies. Keep the repository checkout clean so updates do not conflict with your
 settings or saved notebook outputs. Save your working notebooks and provenance
 with your results before ending the Data Studio analysis.
 
 ## Select the matching release
 
-This notebook set was tested with the **v0.1.3 runtime_r4 bundle**. Its
+This notebook set was tested with the **v0.1.4 runtime r2 bundle** (`v0.1.4-runtime-r2`). Its
 runtime SHA-256 is recorded in [notebook_compatibility.json](notebook_compatibility.json).
 The matching release must be uploaded under:
 
 ```text
-/sbgenomics/project-files/x01_harmonization/v0.1.3/
+/sbgenomics/project-files/x01_harmonization/v0.1.4/
 ```
 
 In the harmonization notebook's first configuration cell, set:
 
 ```python
 RELEASE_ROOT = "/sbgenomics/project-files/x01_harmonization"
-RELEASE_VERSION = "v0.1.3"
+RELEASE_VERSION = "v0.1.4"
 ```
 
-The harmonization notebook defaults to `"v0.1.3"`. Keep that explicit version
+The harmonization notebook defaults to `"v0.1.4"`. Keep that explicit version
 for this bundle; changing it selects a different release. Both notebooks accept
-runtime output schemas 1.1 and 1.2, but Table One additionally requires the `table_one/analysis/1` capability.
+runtime output schemas 1.1, 1.2, and 1.3, but Table One additionally requires the `table_one/analysis/1` capability.
 The earlier schema12_r2 runtime does not provide it. Keep the checksum checks
 intact; install the matching release rather than bypassing a compatibility error.
+Notebooks from earlier commits accept only 1.1 and 1.2 and refuse the v0.1.4
+runtime with a schema mismatch; update your checkout rather than editing the check.
+
+## Carried-forward values (output schema 1.3)
+
+Schema 1.3 adds one `value_origin` value, `carried_forward`, alongside
+`source_reported` and `calculated`. In v0.1.4 it is used only for TOPCAT
+medication use from form T007: when a follow-up visit records no medication
+change, the most recent recorded value is carried to that visit. It is never
+carried past a visit without a recorded medication list. The row's notes name
+the source visit.
+
+Baseline values are never carried forward. Table One does not filter on
+`value_origin`, so follow-up and longitudinal TOPCAT medication summaries
+include carried-forward values. To summarize recorded values only, remove rows
+with `value_origin == "carried_forward"` from `harmonized_long.csv` before
+building the table.
 
 ## Choose domains and individual variables
 
