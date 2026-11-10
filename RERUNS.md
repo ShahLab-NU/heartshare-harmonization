@@ -23,7 +23,7 @@ The archived pre-update public revision is
 proof that every older analysis used that commit; prefer its saved provenance.
 
 Some BDC release archives also contain notebook snapshots as a recovery option;
-the v0.1.4 archive does not. Copy any snapshot into your personal Data Studio
+the v0.1.5 archive does not. Copy any snapshot into your personal Data Studio
 workspace before editing or running. The public notebook repository is the
 normal distribution channel; shared
 Project Files are not a shared editable notebook workspace.
