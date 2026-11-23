@@ -5,8 +5,40 @@ Personal runner notebooks for HeartShare harmonization on BioData Catalyst
 their own Data Studio analysis workspace. Shared Project Files hold the release
 and study data; do not edit or run the shared archived notebook copies there.
 
-> **Status: evaluation.** Harmonized outputs remain candidate data for testing
-> and feedback. Please do not publish results derived from these outputs.
+> **Status: released (v0.1.6).** Harmonized outputs from this release may be
+> used for analysis. Read the release notes first, especially the known
+> limitations. Manuscripts and abstracts using these outputs follow the
+> HeartShare publications policy; report the release version, runtime and
+> notebook commit with your results.
+
+## Read the release notes first
+
+The release notes are in the release folder on BDC:
+
+```text
+/sbgenomics/project-files/x01_harmonization/v0.1.6/RELEASE_NOTES.md
+```
+
+They describe the 13 studies, the variables, the output table, what to know
+before analyzing, and the known limitations. A few points change results if
+missed:
+
+- **Analyze one measurement context at a time.** Blood pressure (by position
+  and timing), ejection fraction (by method), and some labs (local versus core
+  laboratory) have more than one way of being measured. The
+  `measurement_context` column tells them apart, and Table One gives each
+  context its own row.
+- **`hf_phenotype` is the cohort each study enrolled or assigned at baseline**,
+  not a classification from measured ejection fraction. It is available for
+  every study except CATHGEN. Each row's
+  `measurement_context` names the `assignment_method`. Use measured ejection
+  fraction when an analysis needs a specific threshold.
+- **Race in HFN-IRONOUT and SCAN-MP comes from a two-way source grouping**
+  (White vs Black/Other; Black vs Non-Black). Unknown means "reported as
+  Black/Other" (IRONOUT) or "Non-Black or not reported" (SCAN-MP). Do not drop
+  Unknown in these studies.
+- **TOPCAT follow-up medications can be carried forward** from the last
+  recorded visit; see [Carried-forward values](#carried-forward-values-output-schema-13).
 
 ## Get your own notebooks
 
@@ -15,37 +47,38 @@ Start your own BDC Data Studio analysis and open a JupyterLab terminal:
 ```bash
 cd /sbgenomics/workspace
 git clone https://github.com/ShahLab-NU/heartshare-harmonization.git
-mkdir -p heartshare-analysis-v0.1.5-runtime-r2-1
-cp heartshare-harmonization/notebooks/*.ipynb heartshare-analysis-v0.1.5-runtime-r2-1/
-git -C heartshare-harmonization rev-parse HEAD > heartshare-analysis-v0.1.5-runtime-r2-1/notebook_commit.txt
-cp heartshare-harmonization/notebook_compatibility.json heartshare-analysis-v0.1.5-runtime-r2-1/
+mkdir -p heartshare-analysis-v0.1.6-runtime-r1-1
+cp heartshare-harmonization/notebooks/*.ipynb heartshare-analysis-v0.1.6-runtime-r1-1/
+git -C heartshare-harmonization rev-parse HEAD > heartshare-analysis-v0.1.6-runtime-r1-1/notebook_commit.txt
+cp heartshare-harmonization/notebook_compatibility.json heartshare-analysis-v0.1.6-runtime-r1-1/
 ```
 
-Open the notebooks in `heartshare-analysis-v0.1.5-runtime-r2-1/` and edit those
+Open the notebooks in `heartshare-analysis-v0.1.6-runtime-r1-1/` and edit those
 copies. Keep the repository checkout clean so updates do not conflict with your
 settings or saved notebook outputs. Save your working notebooks and provenance
 with your results before ending the Data Studio analysis.
 
 ## Select the matching release
 
-This notebook set was tested with the **v0.1.5 runtime r2 bundle** (`v0.1.5-runtime-r2`). Its
+This notebook set was tested with the **v0.1.6 runtime r1 bundle** (`v0.1.6-runtime-r1`). Its
 runtime SHA-256 is recorded in [notebook_compatibility.json](notebook_compatibility.json).
 The matching release must be uploaded under:
 
 ```text
-/sbgenomics/project-files/x01_harmonization/v0.1.5/
+/sbgenomics/project-files/x01_harmonization/v0.1.6/
 ```
 
-v0.1.4 was prepared but never published on BDC; v0.1.5 follows v0.1.3.
+Releases published on BDC so far: v0.1.3, v0.1.5 and v0.1.6. (v0.1.4 was
+prepared but never published.)
 
 In the harmonization notebook's first configuration cell, set:
 
 ```python
 RELEASE_ROOT = "/sbgenomics/project-files/x01_harmonization"
-RELEASE_VERSION = "v0.1.5"
+RELEASE_VERSION = "v0.1.6"
 ```
 
-The harmonization notebook defaults to `"v0.1.5"`. Keep that explicit version
+The harmonization notebook defaults to `"v0.1.6"`. Keep that explicit version
 for this bundle; changing it selects a different release. Both notebooks accept
 runtime output schemas 1.1, 1.2, and 1.3, but Table One additionally requires the `table_one/analysis/1` capability.
 The earlier schema12_r2 runtime does not provide it. Keep the checksum checks
@@ -69,28 +102,42 @@ include carried-forward values. To summarize recorded values only, remove rows
 with `value_origin == "carried_forward"` from `harmonized_long.csv` before
 building the table.
 
-## New in v0.1.5
+## New in v0.1.6
 
-- **`hf_phenotype`** is available for every study except CATHGEN. For the HFN
-  trials, TOPCAT, Mayo, and SCAN-MP it records the cohort each study enrolled,
-  not a classification from measured ejection fraction. Each row's
-  `measurement_context` names the `assignment_method`, and Table One shows each
-  method on its own row (for example "Heart Failure Phenotype (enrollment
-  defined, baseline)").
-- **Race in HFN-IRONOUT and SCAN-MP** comes from a two-way source grouping (White
-  vs Black/Other; Black vs Non-Black). These rows carry `source_race_grouping`,
-  so Table One reports them on their own rows. There, Unknown means "reported as
-  Black/Other" (IRONOUT) or "Non-Black or not reported" (SCAN-MP). Do not drop
-  Unknown in these studies.
-- **HFN-IRONOUT total iron-binding capacity** has local-lab and core-lab values in
-  separate `lab_source` contexts, shown on separate Table One rows. The assays
-  are not interchangeable; analyze one at a time.
-- **Atrial fibrillation/flutter history.** HFN-EXACT, HFN-RELAX, and SCAN-MP record
-  AF and flutter together, so their history moved from `afib_hx` to
-  `afib_flutter_hx`; HFN-FIGHT and HFN-NEAT also gain `afib_flutter_hx`. Add
-  `afib_flutter_hx` to saved `VARIABLES` lists that name `afib_hx`.
-- **Removed:** `pap_diastolic`, `pap_mean`, `pcwp`, and `subcohort` are no longer
-  in the release. Remove them from saved `VARIABLES` lists.
+- **No change to the harmonized data.** Mappings and variable definitions are
+  the same as in v0.1.5, and full runs produce the same rows.
+- **Fixed: some HFN-EXACT echocardiography selections stopped the run.** In
+  v0.1.5, selecting `lvef`, `lv_mass`, `lvedd`, `lvesd`,
+  `interventricular_septum_thickness` or `lv_posterior_wall_thickness` without
+  both `interventricular_septum_thickness` and `lvedd` failed with
+  "source_condition variable 'ivsd' is not present in the source frame". These
+  selections now run. The v0.1.5 workaround of adding those two variables is no
+  longer needed.
+- **New: compare two releases on BDC.** Run the harmonization notebook's setup
+  cells with `RELEASE_VERSION = "v0.1.6"`, then add a cell:
+
+  ```python
+  from heartshare_harmonization.release_consistency import main as check_releases
+
+  check_releases([
+      "check", "--old", "v0.1.5", "--new", "v0.1.6", "--baseline-only",
+      "--output-dir", "/sbgenomics/workspace/output-files/consistency_v0.1.5_v0.1.6",
+  ])
+  ```
+
+  It reports, per study and variable, whether output changed and whether the
+  release files explain the change. The report holds aggregate results only.
+  Every study and variable should come back `same` between v0.1.5 and v0.1.6.
+  The release notes describe the options.
+
+### Coming from v0.1.3 notebooks
+
+- HFN-EXACT, HFN-RELAX and SCAN-MP record atrial fibrillation and flutter
+  together, so their history is in `afib_flutter_hx`, not `afib_hx`. Add
+  `afib_flutter_hx` to saved `VARIABLES` lists that name `afib_hx`. HFN-FIGHT
+  and HFN-NEAT record the two separately and export both.
+- `pap_diastolic`, `pap_mean`, `pcwp` and `subcohort` are no longer in the
+  release. Remove them from saved `VARIABLES` lists.
 
 ## Choose domains and individual variables
 
