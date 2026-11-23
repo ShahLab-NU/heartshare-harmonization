@@ -39,6 +39,10 @@ missed:
   Unknown in these studies.
 - **TOPCAT follow-up medications can be carried forward** from the last
   recorded visit; see [Carried-forward values](#carried-forward-values-output-schema-13).
+- **Some probable recording errors are kept, with a flag.** For example, TOPCAT
+  albumin values of 30 or more in a g/dL field are kept as recorded, and the
+  lineage file marks them with a `VALUE FLAG:` note. These flags are not a
+  complete plausibility screen; apply your own range checks.
 
 ## Get your own notebooks
 
@@ -210,3 +214,8 @@ Contact Ryan Sisk (r-sisk@northwestern.edu) or open an issue here. Include the
 notebook commit, release/runtime version, study and variable, and relevant error
 output, with participant-level values removed. This repository contains no
 study data, mappings, standards library, or runtime archives.
+
+## License
+
+The code in this repository is released under the [MIT License](LICENSE). The
+license does not cover study data or the release files on BDC.
