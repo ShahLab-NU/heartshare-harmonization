@@ -5,11 +5,12 @@ Personal runner notebooks for HeartShare harmonization on BioData Catalyst
 their own Data Studio analysis workspace. Shared Project Files hold the release
 and study data; do not edit or run the shared archived notebook copies there.
 
-> **Status: released (v0.1.6).** Harmonized outputs from this release may be
-> used for analysis. Read the release notes first, especially the known
-> limitations. Manuscripts and abstracts using these outputs follow the
-> HeartShare publications policy; report the release version, runtime and
-> notebook commit with your results.
+> **Status: released for analysis (v0.1.6).** Use these outputs to explore the
+> data and plan analyses. v1.0.0, the first release for publication, will
+> follow. Manuscripts and abstracts should use v1.0.0 once it is available and
+> follow the [HeartShare publications policy](https://amphf.org/for-scientists/publications/).
+> Read the release notes first, especially the known limitations, and record
+> the release version, runtime and notebook commit with your results.
 
 ## Read the release notes first
 
