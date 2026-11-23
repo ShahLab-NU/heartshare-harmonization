@@ -9,7 +9,7 @@
   },
   "release_archive": {
     "name": "heartshare_bdc_release_v0.1.6.zip",
-    "sha256": "PENDING: filled in when v0.1.6 is finalized"
+    "sha256": "f22d71002cf7411003c2f39d94dafa4006d612bad7545fadddf5b54b0c951ad1"
   },
   "supported_output_schemas": [
     "1.1",
