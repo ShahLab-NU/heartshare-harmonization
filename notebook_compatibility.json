@@ -29,14 +29,21 @@
   },
   "notebook_repository": "https://github.com/ShahLab-NU/heartshare-harmonization",
   "proposed_notebook_tag": "candidate/v0.1.6-runtime-r1-1",
-  "publication_status": "Draft: v0.1.6 is not yet finalized or uploaded; runtime validation pending.",
+  "publication_status": "Released for analysis on BDC (v0.1.6) and validated in BDC Data Studio. v1.0.0 will be the first release for publication.",
   "runtime_source_git_sha": "238a27c439baa0820fa8ca12d16037a579a3ee9c",
   "notebook_revision": "v0.1.6-runtime-r1-1",
   "previous_notebook_tag": "candidate/v0.1.5-runtime-r2-1",
   "previous_notebook_commit": "e956fbabeca2ed404f19d27578ed1de199261712",
   "validation": {
-    "environment": "PENDING: offline BDC-image validation runs after v0.1.6 is finalized",
+    "environment": "BDC Data Studio (JupyterLab) in the HeartShare BDC project, 2026-11-23 to 2026-11-24, with the uploaded v0.1.6 release archive beside the published v0.1.5 release",
     "runtime_sha256": "cb5a76567c58c942fe812b6c5dfab8a7388d3d36bf14c4a26d4c9645396e4f33",
-    "checks": []
+    "checks": [
+      "release_manager verify v0.1.6 against v0.1.5: 67 of 67 checks passed; same source datasets as v0.1.5 (none added, removed or moved)",
+      "release_consistency v0.1.5 to v0.1.6, baseline only: PASS, all 1,366 study-variable pairs identical",
+      "release_consistency v0.1.5 to v0.1.6, all visits: PASS, all 1,413 study-variable pairs identical",
+      "Harmonization notebook: dry run, then the full run with the default selection, completes",
+      "Table One notebook runs on that output",
+      "HFN-EXACT with only lv_mass and lvef selected completes (this selection stopped with an error in v0.1.5)"
+    ]
   }
 }
