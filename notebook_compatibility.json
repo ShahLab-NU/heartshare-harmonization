@@ -25,6 +25,12 @@
     },
     "heartshare_table_one_bdc.ipynb": {
       "sha256": "0789889aac3c4dc69185e496d5cdf3dd075cc4706e45faa34b3e84dbd73cdb7c"
+    },
+    "heartshare_harmonize_bdc_updated.ipynb": {
+      "sha256": "318938038ea2e212f8668ac9684af4e7bf9d6deeb370a984b9dd9c98ea05ef6f"
+    },
+    "heartshare_table_one_bdc_updated.ipynb": {
+      "sha256": "553d4bb4a931917f8b3b5edcbc940d385c5314a0dc2d2bf5636be8fd2e786495"
     }
   },
   "notebook_repository": "https://github.com/ShahLab-NU/heartshare-harmonization",
